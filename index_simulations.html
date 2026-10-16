@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Simulations - Managerial Economics</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 2rem 1rem; }
+    .container { max-width: 1050px; margin: 0 auto; }
+    .nav-back { display: inline-block; margin-bottom: 1.5rem; color: #1a56db; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    h1 { font-size: 2rem; font-weight: 800; color: #1e293b; margin: 0 0 0.5rem 0; }
+    p.lead { color: #64748b; margin-bottom: 2rem; }
+    .sim-table { width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 2.5rem; }
+    .sim-table th, .sim-table td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    .sim-table th { background: #f1f5f9; font-size: 0.8rem; text-transform: uppercase; color: #475569; letter-spacing: 0.05em; }
+    .sim-table tr:hover { background: #f8fafc; }
+    .sim-link { color: #1a56db; text-decoration: none; font-weight: 600; }
+    .tag { display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.75rem; border-radius: 4px; font-weight: 600; }
+    .tag-micro { background: #e0f2fe; color: #0369a1; }
+    .tag-macro { background: #fef3c7; color: #b45309; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="nav-back">&larr; Return to Course Overview</a>
+    <h1>Interactive Simulation Index</h1>
+    <p class="lead">Select a simulation lab below to launch live managerial decision-making environments.</p>
+
+    <h2 style="font-size: 1.25rem; color: #1e293b; margin-bottom: 1rem;">Microeconomic Decision Labs</h2>
+    <table class="sim-table">
+      <thead>
+        <tr>
+          <th>Simulation</th>
+          <th>Economics Concept</th>
+          <th>Decision Variable</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Demand & Revenue Lab</strong></td>
+          <td><span class="tag tag-micro">Elasticity</span> Price Elasticity of Demand & Total Revenue Test</td>
+          <td>Unit Selling Price ($P$)</td>
+          <td><a href="index_FMCG.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+        <tr>
+          <td><strong>Price Discrimination Lab</strong></td>
+          <td><span class="tag tag-micro">Surplus</span> 1st, 2nd & 3rd Degree Price Discrimination</td>
+          <td>Tiered Price Hurdles</td>
+          <td><a href="index_DynamicPricing.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+        <tr>
+          <td><strong>Fixed Cost & Scale Lab</strong></td>
+          <td><span class="tag tag-micro">Costs</span> Sunk Costs, Decreasing $ATC$, $MC \approx 0$</td>
+          <td>Fixed Capex vs Volume</td>
+          <td><a href="index_SaaS.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+        <tr>
+          <td><strong>Labor & Capacity Lab</strong></td>
+          <td><span class="tag tag-micro">Production</span> Variable Factors & Short-Run Output</td>
+          <td>Headcount & Utilization</td>
+          <td><a href="index_ITServices.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+        <tr>
+          <td><strong>Two-Part Tariff Lab</strong></td>
+          <td><span class="tag tag-micro">Pricing</span> Fixed Fee ($T$) + Usage Rate ($P$)</td>
+          <td>Access vs Variable Fee</td>
+          <td><a href="index_complexProducts.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 style="font-size: 1.25rem; color: #1e293b; margin-bottom: 1rem;">Macroeconomic & Strategic Labs</h2>
+    <table class="sim-table">
+      <thead>
+        <tr>
+          <th>Simulation</th>
+          <th>Economics Concept</th>
+          <th>Decision Variable</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>National Accounts Lab</strong></td>
+          <td><span class="tag tag-macro">Macro</span> GDP vs GNP, Value-Added, Factor Income</td>
+          <td>Domestic vs Expat Output</td>
+          <td><a href="index_NationalIncome.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+        <tr>
+          <td><strong>Macro Policy & Capex Lab</strong></td>
+          <td><span class="tag tag-macro">Macro</span> Interest Rates, Exchange Rates, Capex Hurdle</td>
+          <td>₹5,000 Cr Board Capital Allocation</td>
+          <td><a href="index_MacroDashboard.html" class="sim-link">Launch &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macroeconomic Dashboard & Corporate Capex Allocator - CMRIT</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1e429f;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1.5rem 1rem 3rem 1rem;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brand-img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+    .hero {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      color: #1e293b;
+      font-weight: 800;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+    .grid-macro {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 880px) {
+      .grid-macro {
+        grid-template-columns: 1fr;
+      }
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .preset-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .preset-btn {
+      padding: 0.4rem 0.75rem;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #334155;
+      transition: all 0.15s ease;
+    }
+    .preset-btn:hover {
+      background: #e2e8f0;
+    }
+    .slider-group {
+      margin-bottom: 1.25rem;
+    }
+    .slider-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.35rem;
+    }
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .slider-wrap input[type=range] {
+      flex: 1;
+    }
+    .slider-val {
+      font-weight: 700;
+      min-width: 70px;
+      text-align: right;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .kpi-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .kpi-card span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .kpi-card div {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .project-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .project-table th, .project-table td {
+      padding: 0.85rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .project-table th {
+      background: #f8fafc;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #475569;
+      letter-spacing: 0.05em;
+    }
+    .project-table input[type=range] {
+      width: 100%;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .pill-green { background: #dcfce7; color: #15803d; }
+    .pill-red { background: #fee2e2; color: #b91c1c; }
+    .budget-bar-wrap {
+      background: #e2e8f0;
+      border-radius: 9999px;
+      height: 12px;
+      overflow: hidden;
+      margin: 0.75rem 0 1.25rem 0;
+      display: flex;
+    }
+    .budget-seg { height: 100%; transition: width 0.2s ease; }
+    .seg-fmcg { background: #2563eb; }
+    .seg-infra { background: #d97706; }
+    .seg-it { background: #059669; }
+    .seg-debt { background: #7c3aed; }
+    .insight-card {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #1e3a8a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navigation & CMRIT Branding -->
+    <div class="nav-header">
+      <div class="brand-wrap">
+        <a href="index.html">
+          <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" class="brand-img">
+        </a>
+        <div style="border-left: 2px solid var(--border); padding-left: 1rem;">
+          <span style="display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">Department of Management Studies</span>
+          <strong style="font-size: 1.1rem; color: #0f172a;">Macro Strategy & Capex Lab</strong>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; font-size: 0.9rem;">
+        <a href="index.html" style="color: #475569; text-decoration: none; font-weight: 600;">Course Portal</a>
+        <a href="index_simulations.html" style="color: #475569; text-decoration: none; font-weight: 600;">Simulations</a>
+        <a href="debrief.html" style="color: #475569; text-decoration: none; font-weight: 600;">Debrief</a>
+        <a href="facilitator-guide.html" style="color: #475569; text-decoration: none; font-weight: 600;">Faculty Guide</a>
+      </div>
+    </div>
+
+    <!-- Hero Overview -->
+    <div class="hero">
+      <span class="badge">Macroeconomics & Strategic Management</span>
+      <h1>Enterprise Capital Allocation Under Macro Shocks</h1>
+      <p>
+        Step into the role of a conglomerate board (like Tata Sons or Reliance). Allocate a <strong>₹5,000 Crore</strong> capital expenditure budget across four enterprise initiatives while responding to central bank rate shifts, commodity price spikes, and currency volatility.
+      </p>
+    </div>
+
+    <div class="grid-macro">
+      <!-- Left: Macro Controls -->
+      <div class="panel">
+        <h2 style="font-size: 1.1rem; margin: 0 0 0.5rem 0; color: #1e293b;">1. Macroeconomic Environment</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 1rem 0;">Inject real-world economic policy shifts or select a scenario preset:</p>
+
+        <div class="preset-bar">
+          <button class="preset-btn" onclick="applyPreset('goldilocks')">Moderate Baseline</button>
+          <button class="preset-btn" onclick="applyPreset('hawkish')">Hawkish RBI Shock</button>
+          <button class="preset-btn" onclick="applyPreset('crudeSpike')">Oil Spike & FX Drop</button>
+        </div>
+
+        <div class="slider-group">
+          <label>
+            <span>RBI Repo Rate</span>
+            <span class="slider-val" id="repoVal">6.50%</span>
+          </label>
+          <div class="slider-wrap">
+            <input type="range" id="repoRate" min="4.0" max="9.5" step="0.25" value="6.50">
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.72rem;">Directly alters bank base lending rate & corporate borrowing cost.</small>
+        </div>
+
+        <div class="slider-group">
+          <label>
+            <span>Brent Crude Oil ($/Barrel)</span>
+            <span class="slider-val" id="crudeVal">$80/bbl</span>
+          </label>
+          <div class="slider-wrap">
+            <input type="range" id="crudeOil" min="50" max="130" step="5" value="80">
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.72rem;">Impacts domestic logistics, packaging, and input cost inflation.</small>
+        </div>
+
+        <div class="slider-group">
+          <label>
+            <span>Exchange Rate (USD / INR)</span>
+            <span class="slider-val" id="fxVal">₹83.50</span>
+          </label>
+          <div class="slider-wrap">
+            <input type="range" id="fxRate" min="75.0" max="95.0" step="0.5" value="83.50">
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.72rem;">Rupee depreciation lifts export realizations but inflates imported machinery.</small>
+        </div>
+
+        <div class="slider-group">
+          <label>
+            <span>Domestic Rural Demand Index</span>
+            <span class="slider-val" id="ruralVal">Normal (100)</span>
+          </label>
+          <div class="slider-wrap">
+            <input type="range" id="ruralDemand" min="70" max="130" step="5" value="100">
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.72rem;">Governed by monsoon precipitation and farm real wage growth.</small>
+        </div>
+      </div>
+
+      <!-- Right: Boardroom Allocation & Computed Hurdle -->
+      <div class="panel">
+        <h2 style="font-size: 1.1rem; margin: 0 0 1rem 0; color: #1e293b;">2. Corporate Hurdle Rate & Financial Transmission</h2>
+
+        <div class="kpi-strip">
+          <div class="kpi-card">
+            <span>Corporate WACC / Hurdle Rate</span>
+            <div id="hurdleVal" style="color: var(--danger);">10.50%</div>
+          </div>
+          <div class="kpi-card">
+            <span>Weighted Portfolio IRR</span>
+            <div id="portfolioIrrVal" style="color: var(--primary);">13.80%</div>
+          </div>
+          <div class="kpi-card">
+            <span>Annual Economic Value Added</span>
+            <div id="evaVal" style="color: var(--success);">+₹165 Cr</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+          <strong style="font-size: 0.9rem; color: #1e293b;">Capex Pool Allocation (Total: ₹5,000 Crore)</strong>
+          <span style="font-size: 0.85rem; font-weight: 700;" id="budgetStatus">Allocated: ₹5,000 Cr (100%)</span>
+        </div>
+
+        <div class="budget-bar-wrap">
+          <div class="budget-seg seg-fmcg" id="barFmcg" style="width: 30%;"></div>
+          <div class="budget-seg seg-infra" id="barInfra" style="width: 40%;"></div>
+          <div class="budget-seg seg-it" id="barIt" style="width: 20%;"></div>
+          <div class="budget-seg seg-debt" id="barDebt" style="width: 10%;"></div>
+        </div>
+
+        <!-- Project Allocation Table -->
+        <table class="project-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Capital Project</th>
+              <th style="width: 30%;">Budget Allocation (₹ Cr)</th>
+              <th style="width: 20%;">Projected IRR</th>
+              <th style="width: 20%;">Viability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong style="color: #2563eb;">Project A: Rural FMCG Expansion</strong><br>
+                <small style="color: var(--text-muted);">Tier-2/3 distribution hub</small>
+              </td>
+              <td>
+                <input type="range" id="allocFmcg" min="0" max="5000" step="250" value="1500" oninput="handleAllocChange('fmcg')">
+                <span style="font-weight: 700; font-size: 0.85rem;" id="allocFmcgTxt">₹1,500 Cr</span>
+              </td>
+              <td id="irrFmcg">14.2%</td>
+              <td><span class="status-pill pill-green" id="pillFmcg">Viable</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <strong style="color: #d97706;">Project B: Greenfield Solar Fab</strong><br>
+                <small style="color: var(--text-muted);">Capital-intensive, imported equipment</small>
+              </td>
+              <td>
+                <input type="range" id="allocInfra" min="0" max="5000" step="250" value="2000" oninput="handleAllocChange('infra')">
+                <span style="font-weight: 700; font-size: 0.85rem;" id="allocInfraTxt">₹2,000 Cr</span>
+              </td>
+              <td id="irrInfra">11.8%</td>
+              <td><span class="status-pill pill-green" id="pillInfra">Viable</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <strong style="color: #059669;">Project C: Global IT Delivery Center</strong><br>
+                <small style="color: var(--text-muted);">USD billing, domestic INR wage base</small>
+              </td>
+              <td>
+                <input type="range" id="allocIt" min="0" max="5000" step="250" value="1000" oninput="handleAllocChange('it')">
+                <span style="font-weight: 700; font-size: 0.85rem;" id="allocItTxt">₹1,000 Cr</span>
+              </td>
+              <td id="irrIt">16.5%</td>
+              <td><span class="status-pill pill-green" id="pillIt">Highly Viable</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <strong style="color: #7c3aed;">Project D: Corporate Debt Paydown</strong><br>
+                <small style="color: var(--text-muted);">De-leveraging balance sheet</small>
+              </td>
+              <td>
+                <input type="range" id="allocDebt" min="0" max="5000" step="250" value="500" oninput="handleAllocChange('debt')">
+                <span style="font-weight: 700; font-size: 0.85rem;" id="allocDebtTxt">₹500 Cr</span>
+              </td>
+              <td id="irrDebt">10.5%</td>
+              <td><span class="status-pill pill-green" id="pillDebt">Risk-Free</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Managerial Takeaway Analysis -->
+    <div class="insight-card">
+      <h3 style="margin: 0 0 0.5rem 0; font-size: 1.05rem;">Boardroom Strategic Synthesis</h3>
+      <p id="boardroomText" style="margin: 0;"></p>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_BUDGET = 5000;
+
+    function applyPreset(name) {
+      if (name === 'goldilocks') {
+        document.getElementById('repoRate').value = 6.25;
+        document.getElementById('crudeOil').value = 75;
+        document.getElementById('fxRate').value = 83.0;
+        document.getElementById('ruralDemand').value = 110;
+      } else if (name === 'hawkish') {
+        document.getElementById('repoRate').value = 8.50;
+        document.getElementById('crudeOil').value = 95;
+        document.getElementById('fxRate').value = 86.0;
+        document.getElementById('ruralDemand').value = 85;
+      } else if (name === 'crudeSpike') {
+        document.getElementById('repoRate').value = 7.75;
+        document.getElementById('crudeOil').value = 120;
+        document.getElementById('fxRate').value = 89.5;
+        document.getElementById('ruralDemand').value = 80;
+      }
+      recalculate();
+    }
+
+    function handleAllocChange(source) {
+      let aFmcg = parseFloat(document.getElementById('allocFmcg').value);
+      let aInfra = parseFloat(document.getElementById('allocInfra').value);
+      let aIt = parseFloat(document.getElementById('allocIt').value);
+      let aDebt = parseFloat(document.getElementById('allocDebt').value);
+
+      let sum = aFmcg + aInfra + aIt + aDebt;
+      if (sum > TOTAL_BUDGET) {
+        let excess = sum - TOTAL_BUDGET;
+        if (source !== 'debt' && aDebt >= excess) {
+          aDebt -= excess;
+          document.getElementById('allocDebt').value = aDebt;
+        } else if (source !== 'fmcg' && aFmcg >= excess) {
+          aFmcg -= excess;
+          document.getElementById('allocFmcg').value = aFmcg;
+        }
+      }
+      recalculate();
+    }
+
+    function recalculate() {
+      const repo = parseFloat(document.getElementById('repoRate').value);
+      const crude = parseFloat(document.getElementById('crudeOil').value);
+      const fx = parseFloat(document.getElementById('fxRate').value);
+      const rural = parseFloat(document.getElementById('ruralDemand').value);
+
+      document.getElementById('repoVal').textContent = repo.toFixed(2) + '%';
+      document.getElementById('crudeVal').textContent = '$' + crude + '/bbl';
+      document.getElementById('fxVal').textContent = '₹' + fx.toFixed(2);
+      document.getElementById('ruralVal').textContent = rural === 100 ? 'Normal (100)' : (rural > 100 ? `Surplus (+${rural-100}%)` : `Deficit (-${100-rural}%)`);
+
+      // 1. Corporate Hurdle Rate (WACC): Corporate Spread (4.0%) over Repo
+      const hurdleRate = repo + 4.0;
+      document.getElementById('hurdleVal').textContent = hurdleRate.toFixed(2) + '%';
+
+      // 2. Project IRR Calculations based on Macro Variables
+      // FMCG: Gains from rural demand; hurt by crude logistics cost
+      const irrFmcg = 13.0 + ((rural - 100) * 0.12) - ((crude - 80) * 0.05);
+
+      // Greenfield Solar/Infra: Long gestation; heavily penalized by repo (financing cost) and FX (imported panels/machinery)
+      const fxDepreciationPct = ((fx - 83.5) / 83.5) * 100;
+      const irrInfra = 14.5 - ((repo - 6.5) * 1.3) - (fxDepreciationPct * 0.25) - ((crude - 80) * 0.03);
+
+      // Global IT Services: Heavily benefits from USD/INR depreciation; insulated from domestic interest rates
+      const irrIt = 14.0 + (fxDepreciationPct * 0.6) - ((repo - 6.5) * 0.2);
+
+      // Debt Paydown: Generates guaranteed cash saving equal to borrowing cost
+      const irrDebt = hurdleRate;
+
+      document.getElementById('irrFmcg').textContent = irrFmcg.toFixed(1) + '%';
+      document.getElementById('irrInfra').textContent = irrInfra.toFixed(1) + '%';
+      document.getElementById('irrIt').textContent = irrIt.toFixed(1) + '%';
+      document.getElementById('irrDebt').textContent = irrDebt.toFixed(2) + '%';
+
+      // Update Viability Pills
+      updatePill('pillFmcg', irrFmcg, hurdleRate);
+      updatePill('pillInfra', irrInfra, hurdleRate);
+      updatePill('pillIt', irrIt, hurdleRate);
+      const pillDebt = document.getElementById('pillDebt');
+      pillDebt.className = 'status-pill pill-green';
+      pillDebt.textContent = 'Guaranteed ' + hurdleRate.toFixed(1) + '%';
+
+      // Allocation balances
+      const aFmcg = parseFloat(document.getElementById('allocFmcg').value);
+      const aInfra = parseFloat(document.getElementById('allocInfra').value);
+      const aIt = parseFloat(document.getElementById('allocIt').value);
+      const aDebt = parseFloat(document.getElementById('allocDebt').value);
+      const totalAlloc = aFmcg + aInfra + aIt + aDebt;
+
+      document.getElementById('allocFmcgTxt').textContent = '₹' + aFmcg.toLocaleString() + ' Cr';
+      document.getElementById('allocInfraTxt').textContent = '₹' + aInfra.toLocaleString() + ' Cr';
+      document.getElementById('allocItTxt').textContent = '₹' + aIt.toLocaleString() + ' Cr';
+      document.getElementById('allocDebtTxt').textContent = '₹' + aDebt.toLocaleString() + ' Cr';
+
+      document.getElementById('barFmcg').style.width = ((aFmcg / TOTAL_BUDGET) * 100) + '%';
+      document.getElementById('barInfra').style.width = ((aInfra / TOTAL_BUDGET) * 100) + '%';
+      document.getElementById('barIt').style.width = ((aIt / TOTAL_BUDGET) * 100) + '%';
+      document.getElementById('barDebt').style.width = ((aDebt / TOTAL_BUDGET) * 100) + '%';
+
+      const budgetEl = document.getElementById('budgetStatus');
+      budgetEl.textContent = `Allocated: ₹${totalAlloc.toLocaleString()} Cr / ₹5,000 Cr`;
+      budgetEl.style.color = totalAlloc === TOTAL_BUDGET ? 'var(--success)' : (totalAlloc > TOTAL_BUDGET ? 'var(--danger)' : 'var(--warning)');
+
+      // Weighted Portfolio Return
+      let weightedIrr = 0;
+      if (totalAlloc > 0) {
+        weightedIrr = ((aFmcg * irrFmcg) + (aInfra * irrInfra) + (aIt * irrIt) + (aDebt * irrDebt)) / totalAlloc;
+      }
+      document.getElementById('portfolioIrrVal').textContent = weightedIrr.toFixed(2) + '%';
+      document.getElementById('portfolioIrrVal').style.color = weightedIrr >= hurdleRate ? 'var(--primary)' : 'var(--danger)';
+
+      // EVA = Capital * (IRR - Hurdle Rate)
+      const eva = Math.round(totalAlloc * ((weightedIrr - hurdleRate) / 100));
+      const evaEl = document.getElementById('evaVal');
+      evaEl.textContent = (eva >= 0 ? '+₹' : '-₹') + Math.abs(eva).toLocaleString() + ' Cr';
+      evaEl.style.color = eva >= 0 ? 'var(--success)' : 'var(--danger)';
+
+      // Dynamic Boardroom debrief text
+      const textEl = document.getElementById('boardroomText');
+      if (repo >= 7.5 && irrInfra < hurdleRate) {
+        textEl.innerHTML = `<strong>Monetary Tightening Squeeze:</strong> With the RBI Repo Rate at <strong>${repo.toFixed(2)}%</strong>, the enterprise Hurdle Rate has surged to <strong>${hurdleRate.toFixed(2)}%</strong>. Project B (Greenfield Solar) now returns <strong>${irrInfra.toFixed(1)}%</strong>, creating negative EVA (Value Destruction). Under high interest regimes, conglomerate CFOs halt long-gestation capex and reallocate capital into <strong>Project D (Debt Repayment)</strong>, which delivers a guaranteed ${hurdleRate.toFixed(2)}% yield.`;
+      } else if (fx >= 86.0 && crude >= 90) {
+        textEl.innerHTML = `<strong>Twin Macro Shocks (Import Squeeze):</strong> A depreciating Rupee (<strong>₹${fx.toFixed(2)}</strong>) combined with elevated Brent crude (<strong>$${crude}/bbl</strong>) triggers significant cost inflation on domestic distribution and imported capital goods. However, <strong>Project C (Global IT Delivery)</strong> acts as a natural foreign-exchange hedge, outperforming all domestic units with an IRR of <strong>${irrIt.toFixed(1)}%</strong>.`;
+      } else {
+        textEl.innerHTML = `<strong>Accommodative Growth Cycle:</strong> With benign interest rates and stable oil prices, the Hurdle Rate stands at <strong>${hurdleRate.toFixed(2)}%</strong>. All enterprise divisions exhibit positive EVA. The optimal corporate strategy is to maximize capital deployment into long-duration assets (Project A and B) to build capacity before the next tightening cycle begins.`;
+      }
+    }
+
+    function updatePill(id, irr, hurdle) {
+      const el = document.getElementById(id);
+      if (irr >= hurdle + 2.0) {
+        el.className = 'status-pill pill-green';
+        el.textContent = 'Highly Viable';
+      } else if (irr >= hurdle) {
+        el.className = 'status-pill pill-green';
+        el.textContent = 'Viable';
+      } else {
+        el.className = 'status-pill pill-red';
+        el.textContent = 'Destroys Value';
+      }
+    }
+
+    document.querySelectorAll("input[type=range]").forEach(inp => {
+      inp.addEventListener('input', recalculate);
+    });
+
+    recalculate();
+  </script>
+</body>
+</html>

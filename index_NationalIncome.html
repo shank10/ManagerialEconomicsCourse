@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Managerial Economics - GDP vs GNP Simulator</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .metric-card { background: #fff; padding: 1.25rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.06); border-left: 4px solid #1a73e8; }
+    .metric-card h3 { margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #5f6368; }
+    .metric-card .value { font-size: 1.8rem; font-weight: bold; color: #202124; }
+    .control-panel { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
+    .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .slider-row label { font-weight: 500; flex: 1; }
+    .slider-row input { flex: 2; margin: 0 1rem; }
+    .slider-row span { font-weight: bold; min-width: 60px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+    <header style="margin-bottom: 2rem;">
+      <span class="badge" style="background: #e8f0fe; color: #1a73e8; padding: 4px 8px; border-radius: 4px; font-weight: 600;">Macroeconomics Module</span>
+      <h1 style="margin-top: 0.5rem;">The Border vs. The Passport: GDP & GNP Calculator</h1>
+      <p style="color: #5f6368;">Explore how domestic production, foreign investments, and cross-border income flows define national accounts.</p>
+    </header>
+
+    <div class="control-panel">
+      <h2>National Economy Parameters (₹ Thousand Crores)</h2>
+      
+      <div class="slider-row">
+        <label for="domesticOutput">1. Domestic Firms' Production (Inside India)</label>
+        <input type="range" id="domesticOutput" min="100" max="1000" step="50" value="500">
+        <span id="domesticOutputVal">₹500k</span>
+      </div>
+
+      <div class="slider-row">
+        <label for="foreignMncOutput">2. Foreign MNC Output (Produced Inside India)</label>
+        <input type="range" id="foreignMncOutput" min="0" max="500" step="25" value="200">
+        <span id="foreignMncOutputVal">₹200k</span>
+      </div>
+
+      <div class="slider-row">
+        <label for="mncProfitSent">3. Foreign MNC Profits Sent Abroad (Outflow)</label>
+        <input type="range" id="mncProfitSent" min="0" max="200" step="10" value="80">
+        <span id="mncProfitSentVal">₹80k</span>
+      </div>
+
+      <div class="slider-row">
+        <label for="indianIncomeAbroad">4. Indian Expat & Corporate Profits From Abroad (Inflow)</label>
+        <input type="range" id="indianIncomeAbroad" min="0" max="200" step="10" value="60">
+        <span id="indianIncomeAbroadVal">₹60k</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card" style="border-left-color: #1a73e8;">
+        <h3>Gross Domestic Product (GDP)</h3>
+        <div class="value" id="gdpVal">₹700k Cr</div>
+        <small style="color: #5f6368;">Production within Indian Borders</small>
+      </div>
+
+      <div class="metric-card" style="border-left-color: #f2994a;">
+        <h3>Net Factor Income Abroad (NFIA)</h3>
+        <div class="value" id="nfiaVal">-₹20k Cr</div>
+        <small style="color: #5f6368;">Inflows minus Outflows</small>
+      </div>
+
+      <div class="metric-card" style="border-left-color: #27ae60;">
+        <h3>Gross National Product (GNP)</h3>
+        <div class="value" id="gnpVal">₹680k Cr</div>
+        <small style="color: #5f6368;">Income of Indian Citizens & Firms</small>
+      </div>
+    </div>
+
+    <div style="background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem;">
+      <h3 style="margin-top: 0; color: #3730a3;">Managerial Insight</h3>
+      <p id="managerialInsight" style="margin-bottom: 0; color: #1e1b4b; line-height: 1.5;"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculateAccounts() {
+      const domestic = parseFloat(document.getElementById('domesticOutput').value);
+      const foreignMnc = parseFloat(document.getElementById('foreignMncOutput').value);
+      const mncProfit = parseFloat(document.getElementById('mncProfitSent').value);
+      const indianAbroad = parseFloat(document.getElementById('indianIncomeAbroad').value);
+
+      document.getElementById('domesticOutputVal').textContent = '₹' + domestic + 'k';
+      document.getElementById('foreignMncOutputVal').textContent = '₹' + foreignMnc + 'k';
+      document.getElementById('mncProfitSentVal').textContent = '₹' + mncProfit + 'k';
+      document.getElementById('indianIncomeAbroadVal').textContent = '₹' + indianAbroad + 'k';
+
+      const gdp = domestic + foreignMnc;
+      const nfia = indianAbroad - mncProfit;
+      const gnp = gdp + nfia;
+
+      document.getElementById('gdpVal').textContent = '₹' + gdp.toLocaleString() + 'k Cr';
+      document.getElementById('nfiaVal').textContent = (nfia >= 0 ? '+₹' : '-₹') + Math.abs(nfia).toLocaleString() + 'k Cr';
+      document.getElementById('gnpVal').textContent = '₹' + gnp.toLocaleString() + 'k Cr';
+
+      const insight = document.getElementById('managerialInsight');
+      if (gdp > gnp) {
+        insight.innerHTML = "<strong>GDP > GNP:</strong> Foreign capital is generating significant production within domestic borders, but a portion of earnings leaves the country. Corporate supply chains and logistics managers look at <strong>GDP</strong> for factory and warehouse capacity, while consumer retail brands track <strong>GNP</strong> to evaluate domestic household purchasing power.";
+      } else if (gnp > gdp) {
+        insight.innerHTML = "<strong>GNP > GDP:</strong> Income earned by domestic citizens and corporate operations abroad exceeds the profits repatriated by foreign firms. National disposable income is higher than domestic territorial output.";
+      } else {
+        insight.innerHTML = "<strong>GDP = GNP:</strong> Net Factor Income from Abroad is in balance. Inflow from overseas branches matches outflow to foreign capital owners.";
+      }
+    }
+
+    document.querySelectorAll("input[type=range]").forEach(input => {
+      input.addEventListener('input', calculateAccounts);
+    });
+
+    calculateAccounts();
+  </script>
+</body>
+</html>

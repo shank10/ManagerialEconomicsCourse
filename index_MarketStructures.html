@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+      <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Structures & Bertrand Price War Simulation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1e429f;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 2rem 1rem;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+    .nav-back {
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    header {
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      color: #1e293b;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 840px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .panel-firm-a {
+      border-top: 4px solid var(--primary);
+    }
+    .panel-firm-b {
+      border-top: 4px solid #7c3aed;
+    }
+    .control-row {
+      margin-bottom: 1.25rem;
+    }
+    .control-row label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.4rem;
+    }
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .slider-wrap input[type=range] {
+      flex: 1;
+    }
+    .slider-num {
+      font-weight: 700;
+      min-width: 65px;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+    .firm-readout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+      background: #f8fafc;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .metric-small span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .metric-small strong {
+      font-size: 1.25rem;
+      color: #1e293b;
+    }
+    .matrix-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .payoff-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .payoff-table th, .payoff-table td {
+      border: 1px solid var(--border);
+      padding: 0.85rem;
+      text-align: center;
+    }
+    .payoff-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+    }
+    .cell-nash {
+      background: #fef2f2 !important;
+      border: 2px solid var(--danger) !important;
+      position: relative;
+    }
+    .cell-cartel {
+      background: #ecfdf5 !important;
+      border: 2px solid var(--success) !important;
+    }
+    .tag-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+    .tag-nash {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+    .tag-cartel {
+      background: #d1fae5;
+      color: var(--success);
+    }
+    .insight-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .toggle-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .btn-toggle {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: #334155;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-toggle.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index_simulations.html" class="nav-back">&larr; Return to Simulation Directory</a>
+    
+    <header>
+      <h1>Oligopoly Dynamics: The Bertrand Price War Simulator</h1>
+      <p style="color: var(--text-muted); margin: 0;">
+        Experience the fragility of collusion, the Nash Equilibrium race to marginal cost, and how product differentiation shields enterprise profitability.
+      </p>
+    </header>
+
+    <!-- Global Industry Environment -->
+    <div class="panel" style="margin-bottom: 1.5rem; background: #fafafa;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.05rem; margin: 0 0 0.25rem 0;">Industry Environment Parameters</h2>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Shared market fundamentals for two duopoly competitors</span>
+        </div>
+        <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+          <div>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Industry Marginal Cost (MC):</span>
+            <strong style="font-size: 1rem; color: #1e293b; margin-left: 0.25rem;">₹40</strong>
+          </div>
+          <div style="min-width: 240px;">
+            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block;">Product Differentiation Moat:</label>
+            <div class="slider-wrap">
+              <input type="range" id="diffDegree" min="0" max="100" step="10" value="0">
+              <span class="slider-num" id="diffVal">0% (Pure Commodity)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The 2 Competing Duopolists -->
+    <div class="grid-2">
+      <!-- Firm A Panel -->
+      <div class="panel panel-firm-a">
+        <h2 style="font-size: 1.15rem; color: var(--primary); margin: 0 0 1rem 0;">Firm A (Your Strategy)</h2>
+
+        <div class="control-row">
+          <label for="priceA">Retail Selling Price ($P_A$)</label>
+          <div class="slider-wrap">
+            <input type="range" id="priceA" min="40" max="100" step="2" value="70">
+            <span class="slider-num" id="priceAVal">₹70</span>
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Floor is $MC = ₹40$.</small>
+        </div>
+
+        <div class="firm-readout">
+          <div class="metric-small">
+            <span>Market Share</span>
+            <strong id="shareA">50%</strong>
+          </div>
+          <div class="metric-small">
+            <span>Sales Volume ($Q_A$)</span>
+            <strong id="qtyA">3,250 units</strong>
+          </div>
+          <div class="metric-small">
+            <span>Gross Revenue</span>
+            <strong id="revA">₹2,27,500</strong>
+          </div>
+          <div class="metric-small">
+            <span>Economic Profit ($\pi_A$)</span>
+            <strong id="profitA" style="color: var(--success);">₹97,500</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Firm B Panel -->
+      <div class="panel panel-firm-b">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <h2 style="font-size: 1.15rem; color: #7c3aed; margin: 0;">Firm B (Rival Operator)</h2>
+          <span style="font-size: 0.75rem; background: #ede9fe; color: #6d28d9; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Competitor</span>
+        </div>
+
+        <div class="control-row">
+          <label>Competitor Reaction Behavior</label>
+          <div class="toggle-btn-group">
+            <button type="button" class="btn-toggle active" id="btnManual" onclick="setRivalMode('manual')">Manual Slider</button>
+            <button type="button" class="btn-toggle" id="btnUndercut" onclick="setRivalMode('undercut')">Aggressive Undercut</button>
+            <button type="button" class="btn-toggle" id="btnCollude" onclick="setRivalMode('collude')">Match High Price</button>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <label for="priceB">Rival Selling Price ($P_B$)</label>
+          <div class="slider-wrap">
+            <input type="range" id="priceB" min="40" max="100" step="2" value="70">
+            <span class="slider-num" id="priceBVal">₹70</span>
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Floor is $MC = ₹40$.</small>
+        </div>
+
+        <div class="firm-readout">
+          <div class="metric-small">
+            <span>Market Share</span>
+            <strong id="shareB">50%</strong>
+          </div>
+          <div class="metric-small">
+            <span>Sales Volume ($Q_B$)</span>
+            <strong id="qtyB">3,250 units</strong>
+          </div>
+          <div class="metric-small">
+            <span>Gross Revenue</span>
+            <strong id="revB">₹2,27,500</strong>
+          </div>
+          <div class="metric-small">
+            <span>Economic Profit ($\pi_B$)</span>
+            <strong id="profitB" style="color: #7c3aed;">₹97,500</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Theory Payoff Matrix -->
+    <div class="matrix-card">
+      <h2 style="font-size: 1.1rem; margin: 0 0 0.5rem 0;">The Duopoly Payoff Matrix (Game Theory Representation)</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1rem 0;">
+        Payoff format: <strong>(Firm A Profit, Firm B Profit)</strong> based on a two-tier strategic decision of High Price (₹80) vs. Competitive Cut (₹45).
+      </p>
+
+      <table class="payoff-table">
+        <thead>
+          <tr>
+            <th rowspan="2" style="width: 20%;">Firm A Action</th>
+            <th colspan="2">Firm B (Rival) Action</th>
+          </tr>
+          <tr>
+            <th style="width: 40%;">Collude High Price (₹80)</th>
+            <th style="width: 40%;">Price Cut (₹45)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Hold High Price (₹80)</th>
+            <td id="cellHH" class="cell-cartel">
+              <div style="font-weight: 700; font-size: 1.1rem;">(₹1,00,000 , ₹1,00,000)</div>
+              <span class="tag-badge tag-cartel">Cartel / Collusion Benchmark</span>
+            </td>
+            <td id="cellHL">
+              <div style="font-weight: 700; font-size: 1.1rem;">(₹0 , ₹1,40,000)</div>
+              <small style="color: var(--danger);">Firm A loses all volume</small>
+            </td>
+          </tr>
+          <tr>
+            <th>Price Cut (₹45)</th>
+            <td id="cellLH">
+              <div style="font-weight: 700; font-size: 1.1rem;">(₹1,40,000 , ₹0)</div>
+              <small style="color: var(--success);">Firm A steals entire market</small>
+            </td>
+            <td id="cellLL" class="cell-nash">
+              <div style="font-weight: 700; font-size: 1.1rem;">(₹17,500 , ₹17,500)</div>
+              <span class="tag-badge tag-nash">Nash Equilibrium (P ≈ MC)</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Managerial Economics Synthesis -->
+    <div class="insight-box">
+      <h3 style="margin: 0 0 0.5rem 0; color: #1e3a8a; font-size: 1.05rem;">Managerial Insight: Escaping the Bertrand Trap</h3>
+      <p id="insightContent" style="margin: 0; color: #1e293b;"></p>
+    </div>
+  </div>
+
+  <script>
+    const MC = 40;
+    let rivalMode = 'manual';
+
+    function setRivalMode(mode) {
+      rivalMode = mode;
+      document.querySelectorAll('.btn-toggle').forEach(b => b.classList.remove('active'));
+      if (mode === 'manual') document.getElementById('btnManual').classList.add('active');
+      if (mode === 'undercut') document.getElementById('btnUndercut').classList.add('active');
+      if (mode === 'collude') document.getElementById('btnCollude').classList.add('active');
+
+      const sliderB = document.getElementById('priceB');
+      sliderB.disabled = (mode !== 'manual');
+
+      recalc();
+    }
+
+    function recalc() {
+      let PA = parseFloat(document.getElementById('priceA').value);
+      let PB = parseFloat(document.getElementById('priceB').value);
+      const diff = parseFloat(document.getElementById('diffDegree').value);
+
+      // Handle AI rival behaviors
+      if (rivalMode === 'undercut') {
+        PB = Math.max(MC, PA - 2);
+        document.getElementById('priceB').value = PB;
+      } else if (rivalMode === 'collude') {
+        PB = PA;
+        document.getElementById('priceB').value = PB;
+      }
+
+      document.getElementById('priceAVal').textContent = '₹' + PA;
+      document.getElementById('priceBVal').textContent = '₹' + PB;
+      document.getElementById('diffVal').textContent = diff + '% (' + (diff === 0 ? 'Commodity' : (diff > 50 ? 'Strong Brand Moat' : 'Mild Differentiation')) + ')';
+
+      // Total Market Demand Curve: Q = 10,000 - 80 * min(PA, PB)
+      const minP = Math.min(PA, PB);
+      const totalQ = Math.max(1000, 10000 - Math.round(75 * minP));
+
+      let shareA = 0.5;
+      let shareB = 0.5;
+
+      if (diff === 0) {
+        // Pure Bertrand commodity
+        if (PA < PB) {
+          shareA = 1.0;
+          shareB = 0.0;
+        } else if (PB < PA) {
+          shareA = 0.0;
+          shareB = 1.0;
+        } else {
+          shareA = 0.5;
+          shareB = 0.5;
+        }
+      } else {
+        // Smooth share via logistic substitution based on differentiation moat
+        // When diff is high, price difference matters much less
+        const sensitivity = (100 - diff) * 0.08 + 0.5;
+        const delta = (PB - PA) * (sensitivity / 5);
+        shareA = 1 / (1 + Math.exp(-delta));
+        shareB = 1 - shareA;
+      }
+
+      const QA = Math.round(totalQ * shareA);
+      const QB = Math.round(totalQ * shareB);
+
+      const revA = QA * PA;
+      const revB = QB * PB;
+
+      const profA = (PA - MC) * QA;
+      const profB = (PB - MC) * QB;
+
+      document.getElementById('shareA').textContent = Math.round(shareA * 100) + '%';
+      document.getElementById('shareB').textContent = Math.round(shareB * 100) + '%';
+      document.getElementById('qtyA').textContent = QA.toLocaleString() + ' units';
+      document.getElementById('qtyB').textContent = QB.toLocaleString() + ' units';
+      document.getElementById('revA').textContent = '₹' + revA.toLocaleString();
+      document.getElementById('revB').textContent = '₹' + revB.toLocaleString();
+
+      const profitAEl = document.getElementById('profitA');
+      profitAEl.textContent = (profA >= 0 ? '₹' : '-₹') + Math.abs(profA).toLocaleString();
+      profitAEl.style.color = profA > 0 ? 'var(--success)' : (profA === 0 ? 'var(--text-muted)' : 'var(--danger)');
+
+      const profitBEl = document.getElementById('profitB');
+      profitBEl.textContent = (profB >= 0 ? '₹' : '-₹') + Math.abs(profB).toLocaleString();
+      profitBEl.style.color = profB > 0 ? '#7c3aed' : (profB === 0 ? 'var(--text-muted)' : 'var(--danger)');
+
+      // Highlight active quadrant in payoff matrix
+      document.querySelectorAll('.payoff-table td').forEach(td => td.style.boxShadow = 'none');
+      if (PA >= 70 && PB >= 70) {
+        document.getElementById('cellHH').style.boxShadow = 'inset 0 0 0 3px #059669';
+      } else if (PA >= 70 && PB < 70) {
+        document.getElementById('cellHL').style.boxShadow = 'inset 0 0 0 3px #dc2626';
+      } else if (PA < 70 && PB >= 70) {
+        document.getElementById('cellLH').style.boxShadow = 'inset 0 0 0 3px #1a56db';
+      } else {
+        document.getElementById('cellLL').style.boxShadow = 'inset 0 0 0 3px #b91c1c';
+      }
+
+      // Generate dynamic managerial takeaway
+      const insightEl = document.getElementById('insightContent');
+      if (diff === 0 && PA === MC && PB === MC) {
+        insightEl.innerHTML = `<strong>The Bertrand Paradox (Nash Equilibrium):</strong> With zero product differentiation, competing on price drives prices down to marginal cost ($P = MC = ₹40$). Economic profits are completely wiped out ($\pi = ₹0$) even though there are only two firms in the entire market! Duopolies behave like perfect competition when products are identical.`;
+      } else if (diff === 0 && (PA < PB || PB < PA)) {
+        const winner = PA < PB ? 'Firm A' : 'Firm B';
+        insightEl.innerHTML = `<strong>Price Undercutting & Volume Cannibalization:</strong> Because customers perceive zero difference between your offerings, a ₹2 undercut allows <strong>${winner}</strong> to capture 100% of market volume. This powerful incentive to defect is what destroys voluntary cartels.`;
+      } else if (diff > 40 && PA !== PB) {
+        insightEl.innerHTML = `<strong>The Power of Product Differentiation:</strong> Notice what happened! Even with a price gap between Firm A and Firm B, the higher-priced firm maintains substantial market share. By investing in brand moats, switching costs, superior UX, or customer loyalty, managers decouple from destructive price wars and restore pricing power.`;
+      } else {
+        insightEl.innerHTML = `<strong>Tacit Collusion Dilemma:</strong> Both firms could make healthy profits at ₹70–₹80, but both face the constant temptation to lower price to steal market volume. In repeat games, companies avoid price wars through price-matching guarantees, capacity constraints, or multi-market contact.`;
+      }
+    }
+
+    document.querySelectorAll("input[type=range]").forEach(inp => {
+      inp.addEventListener('input', recalc);
+    });
+
+    recalc();
+  </script>
+</body>
+</html>

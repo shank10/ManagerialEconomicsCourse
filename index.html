@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Managerial Economics - Interactive Learning Lab</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1e429f;
+      --surface: #ffffff;
+      --bg: #f8fafc;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #059669;
+      --warning: #d97706;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem 1rem; line-height: 1.5; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.25rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; }
+    header p { color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 0 auto; }
+    .badge { display: inline-block; background: #e0e7ff; color: #3730a3; padding: 0.35rem 0.85rem; border-radius: 9999px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+    .section-title { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 0.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; transition: transform 0.15s ease, box-shadow 0.15s ease; text-decoration: none; color: inherit; display: flex; flex-direction: column; justify-content: space-between; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08); border-color: #cbd5e1; }
+    .card-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+    .card h3 { margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #1e293b; }
+    .card p { margin: 0 0 1.25rem 0; color: var(--text-muted); font-size: 0.95rem; }
+    .btn-link { color: var(--primary); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.25rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Executive & Management Education</span>
+      <h1>Managerial Economics Lab</h1>
+      <p>Interactive economic simulations bridging foundational theory, microeconomic firm-level optimization, and macroeconomic strategic context.</p>
+    </header>
+
+    <div class="section-title">Part I: Microeconomic Optimization (Decisions Inside the Firm)</div>
+    <div class="grid">
+      <a href="index_FMCG.html" class="card">
+        <div>
+          <span class="card-tag">Demand & Elasticity</span>
+          <h3>Elasticity & Revenue Optimizer</h3>
+          <p>Examine how price elasticity of demand ($E_d$) governs the Total Revenue Test, markups, and substitution shocks.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+
+      <a href="index_DynamicPricing.html" class="card">
+        <div>
+          <span class="card-tag">Market Structures & Surplus</span>
+          <h3>Price Discrimination & Surplus Capture</h3>
+          <p>Test 1st, 2nd, and 3rd degree price discrimination to convert consumer surplus into enterprise revenue and eliminate deadweight loss.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+
+      <a href="index_SaaS.html" class="card">
+        <div>
+          <span class="card-tag">Cost Theory</span>
+          <h3>Fixed Costs & Economies of Scale</h3>
+          <p>Explore cost structures with high upfront sunk investment and near-zero marginal cost ($MC \approx 0$), modeling natural monopolies.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+
+      <a href="index_ITServices.html" class="card">
+        <div>
+          <span class="card-tag">Production Theory</span>
+          <h3>Labor Input & Capacity Utilization</h3>
+          <p>Simulate short-run production dynamics, variable labor allocation, and the carrying cost of unutilized bench capacity.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+
+      <a href="index_complexProducts.html" class="card">
+        <div>
+          <span class="card-tag">Nonlinear Pricing</span>
+          <h3>Two-Part Tariffs & Bundling</h3>
+          <p>Model fixed access fees paired with variable marginal usage pricing to capture surplus across heterogeneous buyer segments.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+    </div>
+
+    <div class="section-title">Part II: Macroeconomic Operating Environment</div>
+    <div class="grid">
+      <a href="index_NationalIncome.html" class="card">
+        <div>
+          <span class="card-tag">National Accounts</span>
+          <h3>GDP vs. GNP & Value Added</h3>
+          <p>Map the difference between domestic geographical production (GDP) and resident national income (GNP), isolating intermediate inputs.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+
+      <a href="index_MacroDashboard.html" class="card">
+        <div>
+          <span class="card-tag">Macro Strategy</span>
+          <h3>Macro Shocks & Enterprise Capex</h3>
+          <p>Simulate how shifts in the RBI Repo Rate, Brent crude prices, and currency valuations impact corporate hurdle rates and capital budgeting.</p>
+        </div>
+        <span class="btn-link">Launch Simulation &rarr;</span>
+      </a>
+    </div>
+
+    <div class="section-title"><Summary>Debriefing</Summary></div>
+    <div class="grid">
+      <a href="debrief.html" class="card">
+        <div>
+          <span class="card-tag">Executive Synthesis</span>
+          <h3>Synthesis & Concept Debrief</h3>
+          <p>Consolidated framework connecting textbook economic models to real-world corporate strategy in Indian enterprises.</p>
+        </div>
+        <span class="btn-link">View Debrief &rarr;</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

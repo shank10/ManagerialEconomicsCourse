@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost Structure & Economies of Scale Simulator</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 2rem 1rem; }
+    .container { max-width: 980px; margin: 0 auto; }
+    .nav-back { display: inline-block; margin-bottom: 1rem; color: #1a56db; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .panel { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .slider-row label { flex: 1.5; font-size: 0.9rem; font-weight: 600; color: #334155; }
+    .slider-row input { flex: 2; margin: 0 1rem; }
+    .slider-row span { font-weight: 700; min-width: 80px; text-align: right; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 768px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } }
+    .metric-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; }
+    .metric-box span { font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 0.25rem; font-weight: 600; }
+    .metric-box div { font-size: 1.35rem; font-weight: 800; color: #1e293b; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index_simulations.html" class="nav-back">&larr; Back to Simulations</a>
+    <h1 style="margin: 0 0 0.5rem 0; font-size: 1.85rem; color: #1e293b;">Cost Structures & Economies of Scale Simulator</h1>
+    <p style="color: #64748b; margin-bottom: 2rem;">Analyze why modern software, digital telecom, and heavy infrastructure exhibit monotonically falling Average Total Cost ($ATC$) curves.</p>
+
+    <div class="panel">
+      <h2 style="font-size: 1.1rem; margin: 0 0 1.25rem 0;">Cost & Production Parameters</h2>
+
+      <div class="slider-row">
+        <label>Fixed Upfront Capital / Sunk R&D (TFC)</label>
+        <input type="range" id="tfc" min="100000" max="2000000" step="100000" value="800000">
+        <span id="tfcVal">₹8,00,000</span>
+      </div>
+
+      <div class="slider-row">
+        <label>Marginal Cost per Extra User (MC)</label>
+        <input type="range" id="mc" min="0" max="100" step="5" value="10">
+        <span id="mcVal">₹10</span>
+      </div>
+
+      <div class="slider-row">
+        <label>User Scale / Units Sold (Q)</label>
+        <input type="range" id="volume" min="500" max="50000" step="500" value="5000">
+        <span id="volumeVal">5,000</span>
+      </div>
+
+      <div class="slider-row">
+        <label>Subscription Selling Price (P)</label>
+        <input type="range" id="price" min="50" max="500" step="25" value="200">
+        <span id="priceVal">₹200</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span>Average Fixed Cost (AFC)</span>
+        <div id="afcVal">₹160.00</div>
+      </div>
+      <div class="metric-box">
+        <span>Average Total Cost (ATC)</span>
+        <div id="atcVal">₹170.00</div>
+      </div>
+      <div class="metric-box">
+        <span>Break-Even Volume</span>
+        <div id="beVal">4,211 units</div>
+      </div>
+      <div class="metric-box">
+        <span>Operating Profit (π)</span>
+        <div id="profitVal" style="color: #059669;">₹1,50,000</div>
+      </div>
+    </div>
+
+    <div class="panel" style="background: #f1f5f9; border-left: 4px solid #1a56db;">
+      <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: #1e3a8a;">Managerial Economics Takeaway: The Natural Monopoly Trap</h3>
+      <p id="scaleInsight" style="margin: 0; font-size: 0.95rem; line-height: 1.5; color: #1e293b;"></p>
+    </div>
+  </div>
+
+  <script>
+    function updateCosts() {
+      const TFC = parseFloat(document.getElementById('tfc').value);
+      const MC = parseFloat(document.getElementById('mc').value);
+      const Q = parseFloat(document.getElementById('volume').value);
+      const P = parseFloat(document.getElementById('price').value);
+
+      document.getElementById('tfcVal').textContent = '₹' + TFC.toLocaleString();
+      document.getElementById('mcVal').textContent = '₹' + MC;
+      document.getElementById('volumeVal').textContent = Q.toLocaleString();
+      document.getElementById('priceVal').textContent = '₹' + P;
+
+      const AFC = TFC / Q;
+      const ATC = AFC + MC;
+      const TR = P * Q;
+      const TC = TFC + (MC * Q);
+      const profit = TR - TC;
+
+      const unitContribution = P - MC;
+      const breakEven = unitContribution > 0 ? Math.ceil(TFC / unitContribution) : Infinity;
+
+      document.getElementById('afcVal').textContent = '₹' + AFC.toFixed(2);
+      document.getElementById('atcVal').textContent = '₹' + ATC.toFixed(2);
+      document.getElementById('beVal').textContent = isFinite(breakEven) ? breakEven.toLocaleString() + ' units' : 'Never';
+
+      const profitEl = document.getElementById('profitVal');
+      profitEl.textContent = (profit >= 0 ? '₹' : '-₹') + Math.abs(profit).toLocaleString();
+      profitEl.style.color = profit >= 0 ? '#059669' : '#dc2626';
+
+      const insight = document.getElementById('scaleInsight');
+      insight.innerHTML = `At an output of <strong>${Q.toLocaleString()} units</strong>, your Average Total Cost ($ATC$) is <strong>₹${ATC.toFixed(2)}</strong>, compared to a marginal cost of only <strong>₹${MC.toFixed(2)}</strong>. In industries with massive fixed development costs and minimal marginal reproduction costs, the largest player enjoys a structural cost advantage over competitors. This naturally drives winner-take-most market consolidation.`;
+    }
+
+    document.querySelectorAll("input[type=range]").forEach(inp => inp.addEventListener('input', updateCosts));
+    updateCosts();
+  </script>
+</body>
+</html>

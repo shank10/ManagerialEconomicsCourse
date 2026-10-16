@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+   <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demand Elasticity & Total Revenue Simulation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --primary: #1a56db;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem 1rem; }
+    .container { max-width: 980px; margin: 0 auto; }
+    .nav-back { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    header { margin-bottom: 2rem; }
+    h1 { margin: 0 0 0.5rem 0; font-size: 1.85rem; color: #1e293b; }
+    .layout { display: grid; grid-template-columns: 340px 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; }
+    .slider-container { display: flex; align-items: center; gap: 0.75rem; }
+    .slider-container input[type=range] { flex: 1; }
+    .slider-val { font-weight: 700; min-width: 60px; text-align: right; font-size: 0.95rem; }
+    .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .metric-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+    .metric-box span { font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem; font-weight: 500; }
+    .metric-box div { font-size: 1.45rem; font-weight: 800; color: #1e293b; }
+    .status-badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; }
+    .badge-elastic { background: #fee2e2; color: #b91c1c; }
+    .badge-inelastic { background: #dcfce7; color: #15803d; }
+    .badge-unitary { background: #e0e7ff; color: #4338ca; }
+    .takeaway-card { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; font-size: 0.95rem; line-height: 1.5; color: #1e3a8a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index_simulations.html" class="nav-back">&larr; Back to Simulations</a>
+    <header>
+      <h1>Price Elasticity of Demand & Total Revenue Simulator</h1>
+      <p style="color: var(--text-muted); margin: 0;">Explore how consumer sensitivity to price alters sales quantity, total revenue, and firm profitability.</p>
+    </header>
+
+    <div class="layout">
+      <!-- Control Panel -->
+      <div class="panel">
+        <h2 style="font-size: 1.1rem; margin: 0 0 1.25rem 0;">Pricing Decision Controls</h2>
+
+        <div class="form-group">
+          <label>Unit Retail Price (P)</label>
+          <div class="slider-container">
+            <input type="range" id="price" min="20" max="150" step="5" value="60">
+            <span class="slider-val" id="priceVal">₹60</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Baseline Price Sensitivity (|Ed|)</label>
+          <div class="slider-container">
+            <input type="range" id="elasticity" min="0.2" max="3.0" step="0.1" value="1.5">
+            <span class="slider-val" id="elasticityVal">1.50</span>
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">|Ed| &gt; 1 = Elastic; |Ed| &lt; 1 = Inelastic</small>
+        </div>
+
+        <div class="form-group">
+          <label>Unit Marginal Cost (MC)</label>
+          <div class="slider-container">
+            <input type="range" id="mc" min="10" max="60" step="2" value="30">
+            <span class="slider-val" id="mcVal">₹30</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Fixed Operating Overheads (TFC)</label>
+          <div class="slider-container">
+            <input type="range" id="tfc" min="50000" max="300000" step="10000" value="120000">
+            <span class="slider-val" id="tfcVal">₹120k</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Readout & Insights -->
+      <div class="panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 1.1rem; margin: 0;">Firm Performance Ledger</h2>
+          <span id="elasticityBadge" class="status-badge badge-elastic">Elastic Demand (|Ed| = 1.50)</span>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-box">
+            <span>Market Demand Quantity (Q)</span>
+            <div id="quantityVal">6,500 units</div>
+          </div>
+          <div class="metric-box">
+            <span>Total Revenue (TR = P × Q)</span>
+            <div id="trVal">₹3,90,000</div>
+          </div>
+          <div class="metric-box">
+            <span>Total Cost (TC = TFC + MC×Q)</span>
+            <div id="tcVal">₹3,15,000</div>
+          </div>
+          <div class="metric-box">
+            <span>Operating Profit (π = TR - TC)</span>
+            <div id="profitVal" style="color: #059669;">₹75,000</div>
+          </div>
+        </div>
+
+        <div class="takeaway-card">
+          <strong>The Total Revenue Test in Action:</strong>
+          <p id="takeawayText" style="margin: 0.5rem 0 0 0;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateModel() {
+      const P = parseFloat(document.getElementById('price').value);
+      const Ed = parseFloat(document.getElementById('elasticity').value);
+      const MC = parseFloat(document.getElementById('mc').value);
+      const TFC = parseFloat(document.getElementById('tfc').value);
+
+      document.getElementById('priceVal').textContent = '₹' + P;
+      document.getElementById('elasticityVal').textContent = Ed.toFixed(2);
+      document.getElementById('mcVal').textContent = '₹' + MC;
+      document.getElementById('tfcVal').textContent = '₹' + (TFC / 1000).toFixed(0) + 'k';
+
+      // Base demand model: Q = Q0 * (P / P0)^(-Ed)
+      const basePrice = 50;
+      const baseQty = 10000;
+      let Q = Math.round(baseQty * Math.pow(P / basePrice, -Ed));
+      if (Q < 0) Q = 0;
+
+      const TR = P * Q;
+      const TC = TFC + (MC * Q);
+      const profit = TR - TC;
+
+      document.getElementById('quantityVal').textContent = Q.toLocaleString() + ' units';
+      document.getElementById('trVal').textContent = '₹' + TR.toLocaleString();
+      document.getElementById('tcVal').textContent = '₹' + TC.toLocaleString();
+
+      const profitEl = document.getElementById('profitVal');
+      profitEl.textContent = (profit >= 0 ? '₹' : '-₹') + Math.abs(profit).toLocaleString();
+      profitEl.style.color = profit >= 0 ? '#059669' : '#dc2626';
+
+      const badge = document.getElementById('elasticityBadge');
+      const takeaway = document.getElementById('takeawayText');
+
+      if (Ed > 1.05) {
+        badge.className = 'status-badge badge-elastic';
+        badge.textContent = `Elastic Demand (|Ed| = ${Ed.toFixed(2)})`;
+        takeaway.innerHTML = `Because demand is <strong>elastic</strong>, consumers are highly price-sensitive. Raising price causes quantity demanded to drop by a larger percentage than the price increase, <strong>reducing Total Revenue</strong>. To expand revenue here, managers should lower price or differentiate the product to reduce substitution.`;
+      } else if (Ed < 0.95) {
+        badge.className = 'status-badge badge-inelastic';
+        badge.textContent = `Inelastic Demand (|Ed| = ${Ed.toFixed(2)})`;
+        takeaway.innerHTML = `Because demand is <strong>inelastic</strong>, consumers have few close substitutes. A price hike leads to only a minor drop in volume, causing <strong>Total Revenue to rise</strong>. The firm possesses pricing power, subject to competitor entry and regulatory scrutiny.`;
+      } else {
+        badge.className = 'status-badge badge-unitary';
+        badge.textContent = `Unitary Elasticity (|Ed| ≈ 1.00)`;
+        takeaway.innerHTML = `Demand is <strong>unit elastic</strong>. Total Revenue is currently maximized at this point along the demand curve ($MR = 0$). Any percentage change in price is matched by an equal and opposite percentage change in quantity.`;
+      }
+    }
+
+    document.querySelectorAll("input[type=range]").forEach(inp => {
+      inp.addEventListener('input', updateModel);
+    });
+    updateModel();
+  </script>
+</body>
+</html>

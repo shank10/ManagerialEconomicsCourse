@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+   <!-- CMRIT Universal Top Navigation Header -->
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <a href="index.html" style="display: inline-flex; align-items: center; text-decoration: none;">
+      <img src="assets/CMRIT logo-01.png" alt="CMRIT Logo" style="height: 54px; width: auto; object-fit: contain;">
+    </a>
+    <div style="border-left: 2px solid #cbd5e1; padding-left: 1rem;">
+      <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #1a56db;">Department of Management Studies</span>
+      <strong style="font-size: 1.15rem; color: #0f172a;">Managerial Economics Simulation Lab</strong>
+    </div>
+  </div>
+  <nav style="display: flex; gap: 1rem; align-items: center;">
+    <a href="index.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Portal</a>
+    <a href="index_simulations.html" style="text-decoration: none; color: #475569; font-weight: 600; font-size: 0.9rem;">Simulations</a>
+    <a href="debrief.html" style="text-decoration: none; color: #1a56db; font-weight: 600; font-size: 0.9rem;">Debrief</a>
+  </nav>
+</header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Discrimination & Surplus Extraction Simulation</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 2rem 1rem; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .nav-back { display: inline-block; margin-bottom: 1rem; color: #1a56db; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+    .panel { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .metric-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-align: center; }
+    .metric-box span { font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 0.25rem; font-weight: 600; text-transform: uppercase; }
+    .metric-box div { font-size: 1.5rem; font-weight: 800; }
+    .radio-group { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .radio-label { flex: 1; min-width: 220px; border: 2px solid #e2e8f0; border-radius: 8px; padding: 1rem; cursor: pointer; transition: all 0.15s ease; }
+    .radio-label:hover { border-color: #94a3b8; }
+    .radio-label input { margin-right: 0.5rem; }
+    .radio-label.active { border-color: #1a56db; background: #eff6ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index_simulations.html" class="nav-back">&larr; Back to Simulations</a>
+    <h1 style="margin: 0 0 0.5rem 0; font-size: 1.85rem; color: #1e293b;">Price Discrimination & Surplus Capture Simulator</h1>
+    <p style="color: #64748b; margin-bottom: 2rem;">Compare single uniform pricing with market segmentation and personalized pricing to observe the transfer of consumer surplus to producer profits.</p>
+
+    <div class="panel">
+      <h2 style="font-size: 1.1rem; margin: 0 0 1rem 0;">1. Select Pricing Strategy</h2>
+      <div class="radio-group">
+        <label class="radio-label active" id="strat1">
+          <input type="radio" name="strategy" value="uniform" checked onchange="setStrategy('uniform')">
+          <strong>Single Uniform Price</strong>
+          <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">One price for all customers (Standard retail benchmark).</p>
+        </label>
+        <label class="radio-label" id="strat2">
+          <input type="radio" name="strategy" value="segmented" onchange="setStrategy('segmented')">
+          <strong>3rd Degree: Segmented Pricing</strong>
+          <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">Two hurdles: Peak/Corporate vs. Off-Peak/Student rates.</p>
+        </label>
+        <label class="radio-label" id="strat3">
+          <input type="radio" name="strategy" value="perfect" onchange="setStrategy('perfect')">
+          <strong>1st Degree: Dynamic / Personalized</strong>
+          <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">Extracts maximum willingness to pay from every individual buyer.</p>
+        </label>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Total Market Potential (Willingness to Pay: ₹20 to ₹100)</label>
+          <div style="font-size: 0.9rem; color: #64748b;">1,000 potential buyers distributed evenly along the demand curve.</div>
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Constant Marginal Cost ($MC$)</label>
+          <div style="font-size: 0.9rem; color: #64748b;">Fixed at ₹20 per service unit.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="metric-box">
+        <span>Producer Profit (Firm Surplus)</span>
+        <div id="firmSurplus" style="color: #059669;">₹16,000</div>
+      </div>
+      <div class="metric-box">
+        <span>Consumer Surplus (Buyer Value)</span>
+        <div id="consumerSurplus" style="color: #1a56db;">₹8,000</div>
+      </div>
+      <div class="metric-box">
+        <span>Deadweight Loss (Welfare Loss)</span>
+        <div id="dwl" style="color: #dc2626;">₹8,000</div>
+      </div>
+    </div>
+
+    <div class="panel" style="background: #f8fafc;">
+      <h3 style="font-size: 1rem; margin: 0 0 0.5rem 0; color: #1e293b;">Microeconomic Welfare Analysis</h3>
+      <div id="welfareAnalysis" style="font-size: 0.95rem; line-height: 1.6; color: #334155;"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentStrategy = 'uniform';
+
+    function setStrategy(strat) {
+      currentStrategy = strat;
+      document.querySelectorAll('.radio-label').forEach(el => el.classList.remove('active'));
+      if (strat === 'uniform') document.getElementById('strat1').classList.add('active');
+      if (strat === 'segmented') document.getElementById('strat2').classList.add('active');
+      if (strat === 'perfect') document.getElementById('strat3').classList.add('active');
+      calculateSurplus();
+    }
+
+    function calculateSurplus() {
+      // 1000 buyers with WTP uniformly from 20 to 100. MC = 20. Total potential social surplus = 0.5 * 1000 * 80 = 40,000
+      let ps = 0, cs = 0, dwl = 0;
+      let text = "";
+
+      if (currentStrategy === 'uniform') {
+        // Optimal single price P = 60. Q = 500 buyers (WTP 60 to 100).
+        ps = 500 * (60 - 20); // 20,000
+        cs = 0.5 * 500 * (100 - 60); // 10,000
+        dwl = 0.5 * (1000 - 500) * (60 - 20); // 10,000
+        text = "Under a <strong>single uniform price (₹60)</strong>, the firm maximizes profit for a single-price monopoly. However, 500 willing consumers who value the product between ₹21 and ₹59 are priced out, generating <strong>₹10,000 in Deadweight Loss (DWL)</strong>. The top 500 buyers retain <strong>₹10,000 in Consumer Surplus</strong>.";
+      } else if (currentStrategy === 'segmented') {
+        // 3rd degree: Corporate price = 70 (for WTP 70-100), Leisure price = 45 (for WTP 45-70)
+        // Segment 1 (Corporate): Q = 375, P = 70. PS = 375 * 50 = 18,750. CS = 0.5 * 375 * 30 = 5,625
+        // Segment 2 (Discount): Q = 312, P = 45. PS = 312 * 25 = 7,800. CS = 0.5 * 312 * 25 = 3,900
+        ps = 26550;
+        cs = 9525;
+        dwl = 3925;
+        text = "Under <strong>segmented pricing (3rd degree)</strong>, the firm introduces screening hurdles (e.g., student IDs, non-refundable advance bookings). By charging ₹70 to inelastic corporate buyers and ₹45 to elastic leisure buyers, the firm expands output, increases producer profit, and reduces Deadweight Loss.";
+      } else if (currentStrategy === 'perfect') {
+        // 1st degree: every buyer pays exact WTP
+        ps = 40000;
+        cs = 0;
+        dwl = 0;
+        text = "Under <strong>1st Degree (Perfect Dynamic) Pricing</strong>, the firm extracts each consumer's maximum willingness to pay. <strong>Consumer surplus is reduced to ₹0</strong> and Deadweight Loss disappears because output expands to the competitive benchmark ($P = MC$). Society achieves maximum allocative efficiency, but all economic value is captured by the firm.";
+      }
+
+      document.getElementById('firmSurplus').textContent = '₹' + ps.toLocaleString();
+      document.getElementById('consumerSurplus').textContent = '₹' + cs.toLocaleString();
+      document.getElementById('dwl').textContent = '₹' + dwl.toLocaleString();
+      document.getElementById('welfareAnalysis').innerHTML = text;
+    }
+
+    calculateSurplus();
+  </script>
+</body>
+</html>
